@@ -1,7 +1,13 @@
 module Main where
 
 
-data StdObj x y = StdObjA {x :: Integer} | StdObjB {y :: Integer} deriving Show
+data StdObj x y = StdObjA x | StdObjB y deriving Show
 
 main :: IO ()
-main = putStrLn (show $ StdObjA 1)
+main = putStrLn (show $ obj)
+
+
+obj :: StdObj Integer Integer
+obj = StdObjA 1
+
+
