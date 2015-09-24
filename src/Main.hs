@@ -1,18 +1,29 @@
+{-# Language GADTs #-}
+{-# Language TemplateHaskell #-}
+
 module Main where
 
+import Control.Lens
+import Data.List
+import Data.Function
 
-data StdObj x y = StdObjA x | StdObjB y deriving Show
 
-main :: IO ()
-main = putStrLn . show $ test
+data TestCase i o where
+    TestCase:: { _input:: i
+        , _output:: o
+        } -> TestCase i o
 
-obj :: StdObj Integer Integer
-obj = StdObjA 1
+makeLenses ''TestCase
 
-test = innerProduct v1 v2 == r
-    where
-        v1 = [1, 2, 3]
-        v2 = [4, 5, 6]
-        r = 32
+main = sequence [ (putStrLn . show) (test f c) | f <- function_variants, c <- test_cases ]
 
-innerProduct = (sum .) . zipWith (*)
+function_variants = [ f1 ]
+
+test_cases = [ TestCase [1.. 10] [1.. 10]
+            , TestCase [-2.. 3] [1.. 3]
+            ]
+
+test f c = f (c ^. input) == (c ^. output)
+
+
+f1 = fst . maximumBy (compare `on` snd) . fmap (\x -> (x, length x)) . groupBy ((==) `on` signum)
