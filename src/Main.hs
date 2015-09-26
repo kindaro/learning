@@ -1,29 +1,24 @@
-{-# Language GADTs #-}
-{-# Language TemplateHaskell #-}
-
 module Main where
 
-import Control.Lens
-import Data.List
-import Data.Function
+
+data Sweet =
+          Empty
+        | Candy { price:: Integer , amount:: Integer }
+        | Cake { price:: Integer }
+            deriving Show
 
 
-data TestCase i o where
-    TestCase:: { _input:: i
-        , _output:: o
-        } -> TestCase i o
+-- class Goods a where
+--     value :: a -> Integer
 
-makeLenses ''TestCase
+main = putStrLn.show $ sum (map value testCase)
 
-main = sequence [ (putStrLn . show) (test f c) | f <- function_variants, c <- test_cases ]
+testCase = [Candy 2 3, Cake 5, Empty]
 
-function_variants = [ f1 ]
+value :: Sweet -> Integer
 
-test_cases = [ TestCase [1.. 10] [1.. 10]
-            , TestCase [-2.. 3] [1.. 3]
-            ]
-
-test f c = f (c ^. input) == (c ^. output)
+value a @ Candy {} = price a * amount a
+value a @ Cake {} = price a
+value Empty = 0
 
 
-f1 = fst . maximumBy (compare `on` snd) . fmap (\x -> (x, length x)) . groupBy ((==) `on` signum)
