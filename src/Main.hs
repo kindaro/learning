@@ -1,24 +1,13 @@
 module Main where
 
 
-data Sweet =
-          Empty
-        | Candy { price:: Integer , amount:: Integer }
-        | Cake { price:: Integer }
-            deriving Show
+main = putStrLn.show $ solution f list
 
 
--- class Goods a where
---     value :: a -> Integer
+f = (++) "prefix "
 
-main = putStrLn.show $ sum (map value testCase)
+list = ["Amy", "Henrik", "Josephine"]
 
-testCase = [Candy 2 3, Cake 5, Empty]
-
-value :: Sweet -> Integer
-
-value a @ Candy {} = price a * amount a
-value a @ Cake {} = price a
-value Empty = 0
-
-
+solution :: (String -> String) -> [String] -> [String]
+solution _ [] = []
+solution f l = map f $ (head l) : (solution f $ tail l)
