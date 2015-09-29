@@ -1,6 +1,7 @@
 module Main where
 
 
+main :: IO ()
 main = getLine >>= putStrLn . show . f . read
 
 f :: Integer -> (Integer, Integer)
