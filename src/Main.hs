@@ -1,13 +1,13 @@
 module Main where
 
 
-main = putStrLn.show $ solution f list
+main = putStrLn.show $ solution f list == ["uber Amy", "uber uber Henrik", "uber uber uber Josephine"]
 
 
-f = (++) "prefix "
+f = (++) "uber "
 
 list = ["Amy", "Henrik", "Josephine"]
 
 solution :: (String -> String) -> [String] -> [String]
 solution _ [] = []
-solution f l = map f $ (head l) : (solution f $ tail l)
+solution f (l:ls) = map f $ l : solution f ls
