@@ -9,5 +9,5 @@ f x = (sum digits, (toInteger.length) digits)
 
 digits' :: Integer -> Integer -> [Integer]
 digits' _ 0 = []
-digits' base n = snd q : digits' base (fst q)
-    where q = quotRem n base
+digits' base n = rem : digits' base (quot)
+    where (quot, rem) = quotRem n base
