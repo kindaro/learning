@@ -1,5 +1,8 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 
 
@@ -56,14 +59,15 @@ sequence' (c:cs) = liftM2 (:) c (sequence' cs)
 
 
 type Id = Int
+type RefVal = Map.Map Repr Id
 
-data Ref = Ref { getRef :: Map.Map Repr Id }
+data Ref = Ref { getRef :: RefVal }
 data Diff a = Diff (Id, a, a)
 
-instance Diffable Ref where
+instance Diffable Ref RefVal where
   diff r r' = let m  = getRef r
                   m' = getRef r'
-                  in Diff (1, Ref { getRef = m' }, Ref { getRef = m } )
+                  in Diff (1, m', m)
 
-class Diffable a where
-    diff  :: (Diffable a) => a -> a -> Diff a
+class Diffable a b where
+    diff  :: a -> a -> Diff b
