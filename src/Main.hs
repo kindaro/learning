@@ -4,6 +4,8 @@
     , MultiParamTypeClasses
     , TypeSynonymInstances
     , FlexibleInstances
+    , DataKinds
+    , KindSignatures
     #-}
 
 module Main where
@@ -71,3 +73,6 @@ instance Diffable Ref RefVal where
 
 class Diffable a b where
     diff  :: a -> a -> Diff b
+
+data One
+data Zero :: * -> One -> *
