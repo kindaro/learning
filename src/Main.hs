@@ -10,6 +10,7 @@ import Data.Ix
 import Data.Ix.List
 import Data.Array
 import Control.Monad
+import qualified Data.Map as Map
 
 
 data StdObj = StdObjA {x :: Integer} | StdObjB {y :: Integer} deriving Show
@@ -52,3 +53,17 @@ main = sequence' [ putStrLn (show $ Elem 1 2)
 sequence' :: [IO a] -> IO [a]
 sequence' [] = return []
 sequence' (c:cs) = liftM2 (:) c (sequence' cs)
+
+
+type Id = Int
+
+data Ref = Ref { getRef :: Map.Map Repr Id }
+data Diff a = Diff (Id, a, a)
+
+instance Diffable Ref where
+  diff r r' = let m  = getRef r
+                  m' = getRef r'
+                  in Diff (1, Ref { getRef = m' }, Ref { getRef = m } )
+
+class Diffable a where
+    diff  :: (Diffable a) => a -> a -> Diff a
