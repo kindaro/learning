@@ -1,10 +1,10 @@
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE StandaloneDeriving #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE FlexibleInstances #-}
-
-
+{-# LANGUAGE
+      GADTs
+    , StandaloneDeriving
+    , MultiParamTypeClasses
+    , TypeSynonymInstances
+    , FlexibleInstances
+    #-}
 
 module Main where
 
