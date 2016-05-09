@@ -9,6 +9,7 @@ import Data.Map
 import Data.Ix
 import Data.Ix.List
 import Data.Array
+import Control.Monad
 
 
 data StdObj = StdObjA {x :: Integer} | StdObjB {y :: Integer} deriving Show
@@ -50,7 +51,4 @@ main = sequence' [ putStrLn (show $ Elem 1 2)
 
 sequence' :: [IO a] -> IO [a]
 sequence' [] = return []
-sequence' (c:cs) = do
-    x <- c
-    xs <- sequence cs
-    return (x:xs)
+sequence' (c:cs) = liftM2 (:) c (sequence' cs)
