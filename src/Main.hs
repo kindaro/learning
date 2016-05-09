@@ -51,4 +51,5 @@ main = sequence' [ putStrLn (show $ Elem 1 2)
 
 sequence' :: [IO a] -> IO [a]
 sequence' [] = return []
-sequence' (c:cs) = liftM2 (:) c (sequence' cs)
+sequence' (c:cs) = c >>= \x ->
+                            sequence' cs >>= \xs -> return (x:xs)
